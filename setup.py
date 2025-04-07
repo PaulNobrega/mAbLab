@@ -3,12 +3,12 @@ from setuptools import setup, find_packages
 setup(
     name="mAbLab",
     version="1.0.0",
-    author="Paul",
-    author_email="paul@example.com",
-    description="A library for analyzing monoclonal antibody characteristics.",
+    author="R. Paul Nobrega",
+    author_email="paul@paulnobrega.net",
+    description="A library for analyzing monoclonal antibody characteristics by domain.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/mAbLab",
+    url="https://github.com/PaulNobrega/mAbLab",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -21,6 +21,11 @@ setup(
         "biopython==1.84",
         "numpy==2.1.3",
         "Levenshtein==0.26.1",
-        # Add other dependencies as needed
+        "ImmuneBuilder==1.2",
+        "pandas==2.2.3",
+        "scipy==1.14.1",
+        "torch==2.5.1",
+        "torchvision==0.20.1",
+        "torchaudio==2.5.1",
     ],
 )
