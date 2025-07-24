@@ -29,18 +29,47 @@ class Mab:
             lc1_aa_sequence (str): Amino acid sequence of light chain 1.
             lc2_aa_sequence (str): Amino acid sequence of light chain 2.
         """
-        self.hc1 = HC(hc1_aa_sequence) if hc1_aa_sequence else None
-        self.lc1 = LC(lc1_aa_sequence) if lc1_aa_sequence else None
-        self.hc2 = HC(hc2_aa_sequence) if hc2_aa_sequence else None
-        self.lc2 = LC(lc2_aa_sequence) if lc2_aa_sequence else None
-        self.fab1 = self._Fab(self.hc1, self.lc1) if self.hc1 and self.lc1 else None
-        self.fab2 = self._Fab(self.hc2, self.lc2) if self.hc2 and self.lc2 else None
-        self.properties = self._calculate_mab_properties([
-            self.hc1.full_chain.sequence if self.hc1 else None,
-            self.hc2.full_chain.sequence if self.hc2 else None,
-            self.lc1.full_chain.sequence if self.lc1 else None,
-            self.lc2.full_chain.sequence if self.lc2 else None
-        ])
+        self.errors = []
+        try:
+            self.hc1 = HC(hc1_aa_sequence) if hc1_aa_sequence else None
+        except Exception as e:
+            self.hc1 = None
+            self.errors.append(f"hc1: {str(e)}")
+        try:
+            self.lc1 = LC(lc1_aa_sequence) if lc1_aa_sequence else None
+        except Exception as e:
+            self.lc1 = None
+            self.errors.append(f"lc1: {str(e)}")
+        try:
+            self.hc2 = HC(hc2_aa_sequence) if hc2_aa_sequence else None
+        except Exception as e:
+            self.hc2 = None
+            self.errors.append(f"hc2: {str(e)}")
+        try:
+            self.lc2 = LC(lc2_aa_sequence) if lc2_aa_sequence else None
+        except Exception as e:
+            self.lc2 = None
+            self.errors.append(f"lc2: {str(e)}")
+        try:
+            self.fab1 = self._Fab(self.hc1, self.lc1) if self.hc1 and self.lc1 else None
+        except Exception as e:
+            self.fab1 = None
+            self.errors.append(f"fab1: {str(e)}")
+        try:
+            self.fab2 = self._Fab(self.hc2, self.lc2) if self.hc2 and self.lc2 else None
+        except Exception as e:
+            self.fab2 = None
+            self.errors.append(f"fab2: {str(e)}")
+        try:
+            self.properties = self._calculate_mab_properties([
+                self.hc1.full_chain.sequence if self.hc1 else None,
+                self.hc2.full_chain.sequence if self.hc2 else None,
+                self.lc1.full_chain.sequence if self.lc1 else None,
+                self.lc2.full_chain.sequence if self.lc2 else None
+            ])
+        except Exception as e:
+            self.properties = None
+            self.errors.append(f"properties: {str(e)}")
 
     def _calculate_mab_properties(self, chain_list: list[str]) -> ProteinProperties:
         """
@@ -93,6 +122,23 @@ class Mab:
             if not fd_seq or not lc_seq:
                 return None
             return ProteinProperties([fd_seq + lc_seq])
+
+    def to_dict(self):
+        def serialize(obj):
+            if obj is None:
+                return None
+            if isinstance(obj, (str, int, float, bool)):
+                return obj
+            if isinstance(obj, list):
+                return [serialize(i) for i in obj]
+            if isinstance(obj, dict):
+                return {k: serialize(v) for k, v in obj.items()}
+            if hasattr(obj, "to_dict"):
+                return obj.to_dict()
+            if hasattr(obj, "__dict__"):
+                return {k: serialize(v) for k, v in obj.__dict__.items() if not k.startswith("_")}
+            return str(obj)
+        return serialize(self)
 
 
 

@@ -70,9 +70,9 @@ def calculate_monoisotopic_mass(sequence_list: List[str], reduced: bool = False)
     for sequence in sequence_list:
         sequence = sequence.upper().strip()
         total_mass += sum(weights[aa] for aa in sequence)
+        total_mass += 18.0105 # water mass per chain for termini
 
-    # Add water molecule mass once for the entire protein complex
-    return total_mass + 18.0105
+    return total_mass
 
 
 def calculate_average_mass(sequence_list: List[str], reduced: bool = False) -> float:
@@ -103,9 +103,9 @@ def calculate_average_mass(sequence_list: List[str], reduced: bool = False) -> f
     for sequence in sequence_list:
         sequence = sequence.upper().strip()
         total_mass += sum(weights[aa] for aa in sequence)
+        total_mass += 18.01528 # water mass per chain for termini
 
-    # Add water molecule mass once for the entire protein complex
-    return total_mass + 18.01528
+    return total_mass
 
 
 def calculate_e_one_percent(molar_ext_co: float, molecular_weight: float) -> float:
