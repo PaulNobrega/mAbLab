@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mAbLab",
-    version="1.0.0",
+    version="1.0.1",
     author="R. Paul Nobrega",
     author_email="paul@paulnobrega.net",
     description="A library for analyzing monoclonal antibody characteristics by domain.",
