@@ -211,3 +211,26 @@ class LightChain:
                 self.martin = None
                 self.aho = None
 
+    def to_dict(self):
+        def serialize(obj, seen=None):
+            if seen is None:
+                seen = set()
+            obj_id = id(obj)
+            if obj_id in seen:
+                return None
+            seen.add(obj_id)
+            if obj is None:
+                return None
+            if isinstance(obj, (str, int, float, bool)):
+                return obj
+            if isinstance(obj, list):
+                return [serialize(i, seen) for i in obj]
+            if isinstance(obj, dict):
+                return {k: serialize(v, seen) for k, v in obj.items()}
+            if hasattr(obj, "to_dict") and obj is not self:
+                return obj.to_dict()
+            if hasattr(obj, "__dict__"):
+                return {k: serialize(v, seen) for k, v in obj.__dict__.items() if not k.startswith("_")}
+            return str(obj)
+        return serialize(self)
+

@@ -123,25 +123,21 @@ class Mab:
                 return None
             return ProteinProperties([fd_seq + lc_seq])
 
+        def to_dict(self):
+            return {
+                "fd_sequence": self.fd_sequence,
+                "lc_sequence": self.lc_sequence,
+                "properties": self.properties.to_dict() if self.properties and hasattr(self.properties, "to_dict") else None,
+            }
+
     def to_dict(self):
-        def serialize(obj):
-            if obj is None:
-                return None
-            if isinstance(obj, (str, int, float, bool)):
-                return obj
-            if isinstance(obj, list):
-                return [serialize(i) for i in obj]
-            if isinstance(obj, dict):
-                return {k: serialize(v) for k, v in obj.items()}
-            if hasattr(obj, "to_dict"):
-                return obj.to_dict()
-            if hasattr(obj, "__dict__"):
-                return {k: serialize(v) for k, v in obj.__dict__.items() if not k.startswith("_")}
-            return str(obj)
-        return serialize(self)
-
-
-
-
-
-
+        return {
+            "hc1": self.hc1.to_dict() if self.hc1 and hasattr(self.hc1, "to_dict") else None,
+            "hc2": self.hc2.to_dict() if self.hc2 and hasattr(self.hc2, "to_dict") else None,
+            "lc1": self.lc1.to_dict() if self.lc1 and hasattr(self.lc1, "to_dict") else None,
+            "lc2": self.lc2.to_dict() if self.lc2 and hasattr(self.lc2, "to_dict") else None,
+            "fab1": self.fab1.to_dict() if self.fab1 and hasattr(self.fab1, "to_dict") else None,
+            "fab2": self.fab2.to_dict() if self.fab2 and hasattr(self.fab2, "to_dict") else None,
+            "properties": self.properties.to_dict() if self.properties and hasattr(self.properties, "to_dict") else None,
+            "errors": self.errors,
+        }

@@ -72,3 +72,26 @@ class ProteinProperties:
         for ph in np.arange(1, 12.25, 0.25):
             charge_ph_profile.append((float(ph), float(self._chain_properties.charge_at_pH(ph))))
         return charge_ph_profile
+
+    def to_dict(self):
+        """
+        Convert the protein properties to a dictionary.
+
+        Returns:
+            dict: A dictionary containing all the protein properties.
+        """
+        return {
+            "length": self.length,
+            "isoelectric_point": self.isoelectric_point,
+            "charge_ph_profile": self.charge_ph_profile,
+            "average_molecular_weight": self.average_molecular_weight,
+            "monoisotopic_molecular_weight": self.monoisotopic_molecular_weight,
+            "reduced_average_molecular_weight": self.reduced_average_molecular_weight,
+            "reduced_monoisotopic_molecular_weight": self.reduced_monoisotopic_molecular_weight,
+            "reduced_molar_extinction_coefficient": self.reduced_molar_extinction_coefficient,
+            "molar_extinction_coefficient": self.molar_extinction_coefficient,
+            "reduced_e_one_percent": self.reduced_e_one_percent,
+            "e_one_percent": self.e_one_percent,
+            "gravy_score": self.gravy_score,
+            "aromaticity": self.aromaticity,
+        }
